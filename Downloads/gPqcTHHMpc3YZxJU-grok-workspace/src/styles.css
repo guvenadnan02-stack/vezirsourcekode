@@ -1,0 +1,174 @@
+@import "tailwindcss";
+@import "@fontsource/outfit/latin-400.css";
+@import "@fontsource/outfit/latin-500.css";
+@import "@fontsource/outfit/latin-600.css";
+@import "@fontsource/fraunces/latin-500.css";
+@import "@fontsource/fraunces/latin-500-italic.css";
+@import "@fontsource/fraunces/latin-600-italic.css";
+
+@theme {
+  --color-bg: #0e1114;
+  --color-surface: #171b20;
+  --color-elevated: #21262d;
+  --color-fg: #efeae2;
+  --color-muted: #a39b90;
+  --color-gold: #c9a36a;
+  --color-ink: #161410;
+  --color-line: #2c333c;
+  --color-danger: #d4654f;
+  --color-ok: #8eae78;
+  --color-sq-light: #e4d5bc;
+  --color-sq-dark: #4e5d42;
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, georgia, serif;
+  --radius-lg: 1rem;
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    min-height: 100%;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-gold) 45%, transparent);
+    color: var(--color-ink);
+  }
+}
+
+.board-frame {
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--color-gold) 16%, transparent), transparent 28%),
+    var(--color-elevated);
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  box-shadow: 0 22px 50px color-mix(in oklab, black 42%, transparent);
+}
+
+.board-wrap {
+  width: 100%;
+  max-width: 40rem;
+}
+
+.sq {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 0;
+  aspect-ratio: 1;
+}
+.sq-light {
+  background: var(--color-sq-light);
+}
+.sq-dark {
+  background: var(--color-sq-dark);
+}
+.sq-last.sq-light {
+  background: color-mix(in oklab, var(--color-gold) 58%, var(--color-sq-light));
+}
+.sq-last.sq-dark {
+  background: color-mix(in oklab, var(--color-gold) 40%, var(--color-sq-dark));
+}
+.sq-selected {
+  box-shadow: inset 0 0 0 3px var(--color-gold);
+}
+.sq-check {
+  background: color-mix(in oklab, var(--color-danger) 78%, white) !important;
+}
+.sq-legal::after,
+.sq-capture::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+.sq-legal::after {
+  width: 28%;
+  height: 28%;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-ink) 38%, transparent);
+}
+.sq-dark.sq-legal::after {
+  background: color-mix(in oklab, var(--color-fg) 55%, transparent);
+}
+.sq-capture::after {
+  width: 84%;
+  height: 84%;
+  border-radius: 999px;
+  border: 3px solid color-mix(in oklab, var(--color-ink) 42%, transparent);
+}
+.sq-dark.sq-capture::after {
+  border-color: color-mix(in oklab, var(--color-fg) 62%, transparent);
+}
+
+.piece {
+  width: 86%;
+  height: 86%;
+  pointer-events: none;
+  overflow: visible;
+}
+.theme-classic .piece path {
+  fill: currentColor;
+  stroke-linejoin: round;
+}
+.theme-classic .piece-w {
+  color: var(--color-fg);
+  filter: drop-shadow(0 1px 0 color-mix(in oklab, black 35%, transparent));
+}
+.theme-classic .piece-w path {
+  stroke: var(--color-ink);
+  stroke-width: 1.15;
+}
+.theme-classic .piece-b {
+  color: var(--color-ink);
+}
+.theme-classic .piece-b path {
+  stroke: var(--color-gold);
+  stroke-width: 1.05;
+}
+.theme-modern .piece path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.theme-modern .piece-w {
+  color: var(--color-fg);
+  filter: drop-shadow(0 0 1px var(--color-ink)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.45));
+}
+.theme-modern .piece-b {
+  color: var(--color-ink);
+  filter: drop-shadow(0 0 1px var(--color-fg)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.28));
+}
+
+.modal-panel {
+  max-height: min(85dvh, 42rem);
+}
+
+.pulse-dot {
+  animation: vezir-pulse 1.15s ease-in-out infinite;
+}
+@keyframes vezir-pulse {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot {
+    animation: none;
+  }
+}
